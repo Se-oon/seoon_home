@@ -615,43 +615,15 @@
                 <div class="writing-category-desc">현장 에세이 · Field Essays</div>
             </div>
             <ul class="post-list">
-                <li class="post-item" data-post="gamgak" data-core="1">
-                    <span class="post-num">㉚</span>
-                    <div class="post-body">
-                        <div class="post-title">감각이 먼저 알 때</div>
-                        <div class="post-preview">숫자가 나오기 전에 이미 알고 있을 때가 있다. 매장 문을 열고 들어서는 순간, 설명하기 어려운 무언가가 느껴진다.</div>
-                    </div>
-                </li>
-                <li class="post-item" data-post="nochigi" data-core="1">
-                    <span class="post-num">㉙</span>
-                    <div class="post-body">
-                        <div class="post-title">놓치기로 결심한 날</div>
-                        <div class="post-preview">기회는 두 번 왔다. 나는 두 번 모두 지원서를 열지 않았다. 처음에는 그 이유를 명확하게 설명할 수 없었다.</div>
-                    </div>
-                </li>
-                <li class="post-item" data-post="allim" data-core="1">
-                    <span class="post-num">㉘</span>
-                    <div class="post-body">
-                        <div class="post-title">알림을 끄는 일</div>
-                        <div class="post-preview">11분이었다. 점장과 마주 앉아 이야기를 나눈 시간. 그 짧은 11분 동안 알림이 17개 쌓여 있었다.</div>
-                    </div>
-                </li>
-                <li class="post-item" data-post="chungjeon">
-                    <span class="post-num">㉗</span>
-                    <div class="post-body">
-                        <div class="post-title">나를 충전하는 시간</div>
-                        <div class="post-preview">나는 혼자 있는 시간, 조용히 책을 읽는 시간 속에서 에너지를 채우는 사람이었다.</div>
-                    </div>
-                </li>
                 <li class="post-item" data-post="60cho" data-core="1">
                     <span class="post-num">①</span>
                     <div class="post-body">
                         <div class="post-title">출근 전 60초</div>
-                        <div class="post-preview">저 문을 열고 들어가는 내 얼굴이 오늘 이 공간의 첫인상이 될 테니까.</div>
+                        <div class="post-preview">오늘 나는 어떤 온도로 머물 것인가. 새벽 5시, 어김없이 알람이 울린다 — 누구에게나 공평하게 주어진 하루의 시작.</div>
                     </div>
                 </li>
             </ul>
-            <p class="post-note">핵심 글(<span class="post-note-mark">↗</span> 표시)은 네이버 블로그 ‘리더의 온도’로 이어집니다.</p>
+            <p class="post-note">글 제목(<span class="post-note-mark">↗</span> 표시)을 누르면 네이버 블로그 ‘리더의 온도’ 원문으로 이어집니다. 다음 글은 발행되는 대로 이곳에 하나씩 더해집니다.</p>
         </div>
     </div>
     <div class="wrap">
@@ -726,14 +698,12 @@
        ─ 비워두면(''), 글은 표시되지만 링크는 걸리지 않습니다.
        ─ NAVER_BLOG 에는 블로그 메인(또는 '리더의 온도' 카테고리) 주소.
        ───────────────────────────────────────────── */
-    const NAVER_BLOG = '';   // 예: 'https://blog.naver.com/아이디'
+    const NAVER_BLOG = 'https://blog.naver.com/zhengai12';   // 블로그 메인
 
     const BLOG_LINKS = {
-        gamgak:    '',   // 감각이 먼저 알 때
-        nochigi:   '',   // 놓치기로 결심한 날
-        allim:     '',   // 알림을 끄는 일
-        '60cho':   '',   // 출근 전 60초
-        // chungjeon: '나를 충전하는 시간' — 핵심 글 아님, 필요 시 추가
+        // 리더의온도 ① 출근 전 60초
+        '60cho': 'https://blog.naver.com/zhengai12/224169220051',
+        // 다음 글: 발행 후 'data-post' 키와 URL을 한 줄씩 추가
     };
 
     // 기록 페이지의 핵심 글을 블로그 링크로 연결
