@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서온 · Seoon</title>
+    <meta name="description" content="현장에서 보낸 20년의 온도를 기록합니다. 사람과 이야기 사이에서, 결이 닿는 곳을 찾아가고 있어요.">
+    <meta property="og:title" content="서온 · Seoon">
+    <meta property="og:description" content="현장에서 보낸 20년의 온도를 기록합니다. 사람과 이야기 사이에서, 결이 닿는 곳을 찾아가고 있어요.">
+    <meta property="og:type" content="website">
+    <meta name="author" content="서온">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'><path d='M2 22 C8 8 14 8 16 14' stroke='%236a7a59' stroke-width='2.4' stroke-linecap='round'/><path d='M16 14 C17 17 18 20 20 22' stroke='%23ae7a55' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='2.5 3' opacity='0.8'/><path d='M20 22 C22 26 28 26 30 18' stroke='%236a7a59' stroke-width='2.4' stroke-linecap='round'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:      #ffffff;
+            --text:    #1a1a1a;
+            --mid:     #5a5a5a;
+            --light:   #999999;
+            --sage:    #6a7a59;
+            --sage-lt: #9fb08d;
+            --earth:   #ae7a55;
+            --line:    #e8e8e8;
+            --max:     680px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 300;
+            line-height: 1.9;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 44px;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 44px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .logo-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 300;
+            color: #767676;
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            transition: color 0.25s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.on { color: var(--sage); }
+
+        /* ── PAGES ── */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 62px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .page.active { display: block; }
+
+        /* ── HOME PAGE ── */
+        .home-hero {
+            padding: 108px 0 88px;
+            text-align: center;
+        }
+
+        /* 히어로 브랜드마크 */
+        .home-brand-mark {
+            margin-bottom: 28px;
+        }
+
+        .home-brand-mark svg {
+            width: 260px;
+            height: auto;
+        }
+
+
+        .home-slogan {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 68px;
+        }
+
+        .home-slogan-ko {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 300;
+            color: var(--sage);
+            letter-spacing: 0.14em;
+        }
+
+        .home-slogan-dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--sage-lt);
+            opacity: 0.6;
+        }
+
+        .home-slogan-en {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--light);
+            letter-spacing: 0.2em;
+        }
+
+        .home-phrase {
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--mid);
+            line-height: 2.5;
+            margin-bottom: 0;
+        }
+
+
+        /* ── PAGE COMMON ── */
+        .page-content {
+            padding: 56px 0 100px;
+        }
+
+        .page-label {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.32em;
+            color: var(--sage);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .page-label::after {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--sage-lt);
+            opacity: 0.6;
+        }
+
+        /* ── ABOUT PAGE ── */
+        .about-photo {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 3/4;
+            background: #ece8e2;
+            margin-bottom: 52px;
+            overflow: hidden;
+        }
+
+        .about-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .about-intro {
+            font-size: 19px;
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+
+        .about-intro em {
+            color: var(--earth);
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        .about-role {
+            display: inline-block;
+            margin-top: 8px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.14em;
+            color: var(--sage);
+        }
+
+        .about-body {
+            font-size: 15px;
+            color: var(--mid);
+            line-height: 2.6;
+            max-width: 480px;
+        }
+
+        .about-body em {
+            color: var(--earth);
+            font-style: normal;
+        }
+
+        /* ── WRITING PAGE ── */
+        .writing-category {
+            margin-bottom: 36px;
+        }
+
+        .writing-category-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .writing-category-desc {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--light);
+            letter-spacing: 0.12em;
+        }
+
+        .post-list { list-style: none; }
+
+        .post-item {
+            display: flex;
+            gap: 20px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .post-item:first-child { border-top: 1px solid var(--line); }
+
+        /* 네이버 블로그로 연결되는 핵심 글 */
+        .post-item.is-link {
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+
+        .post-item.is-link:hover {
+            background: #fafbf9;
+        }
+
+        .post-item.is-link:hover .post-title { color: var(--sage); }
+
+        .post-num {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            color: var(--sage-lt);
+            min-width: 22px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .post-body { flex: 1; }
+
+        .post-title {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.5;
+            transition: color 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 외부 링크 화살표 */
+        .post-arrow {
+            display: inline-flex;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            color: var(--earth);
+            opacity: 0.65;
+            transform: translateY(-1px);
+            transition: opacity 0.25s, transform 0.25s;
+        }
+
+        .post-item.is-link:hover .post-arrow {
+            opacity: 1;
+            transform: translate(2px, -3px);
+        }
+
+        .post-note {
+            margin-top: 28px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--light);
+            letter-spacing: 0.04em;
+            line-height: 1.9;
+        }
+
+        .post-note-mark { color: var(--earth); }
+
+        .post-preview {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            color: #6e6e6e;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        /* ── DIRECTION PAGE ── */
+        .direction-body {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .direction-body::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 6px; bottom: 6px;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--sage-lt), transparent);
+        }
+
+        .direction-text {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 2.6;
+            color: var(--mid);
+        }
+
+        .direction-text strong {
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .gyeol-def {
+            margin-bottom: 44px;
+            padding-bottom: 36px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .gyeol-def-term {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            color: var(--sage);
+            margin-bottom: 14px;
+        }
+
+        .gyeol-def-body {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 2.4;
+            color: var(--mid);
+        }
+
+        .gyeol-def-body em {
+            color: var(--earth);
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        /* ── CONNECT ── */
+        .connect-block {
+            margin-top: 64px;
+            padding-top: 52px;
+            border-top: 1px solid var(--line);
+        }
+
+        .connect-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.32em;
+            color: var(--sage);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .connect-intro {
+            font-size: 14px;
+            color: var(--mid);
+            line-height: 2.4;
+            margin-bottom: 40px;
+            max-width: 460px;
+        }
+
+        .connect-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .connect-item {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .connect-item:first-child { border-top: 1px solid var(--line); }
+
+        .connect-category {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 10px;
+            font-weight: 300;
+            letter-spacing: 0.18em;
+            color: var(--sage-lt);
+            min-width: 56px;
+            flex-shrink: 0;
+        }
+
+        .connect-detail {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--mid);
+            line-height: 1.8;
+        }
+
+        .connect-detail a {
+            color: var(--mid);
+            text-decoration: none;
+            border-bottom: 1px solid var(--line);
+            transition: color 0.25s, border-color 0.25s;
+        }
+
+        .connect-detail a:hover {
+            color: var(--sage);
+            border-color: var(--sage-lt);
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            border-top: 1px solid var(--line);
+            padding: 56px 0;
+            text-align: center;
+        }
+
+        .footer-copy {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 10px;
+            color: var(--light);
+            letter-spacing: 0.18em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 560px) {
+            .wrap, .header-inner { padding: 0 24px; }
+            .home-hero { padding: 80px 0 56px; }
+            .nav-links { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+    <div class="header-inner">
+        <button class="logo" onclick="showPage('home')">
+            <svg width="50" height="20" viewBox="0 0 120 48" fill="none">
+                <!-- 왼쪽 결 -->
+                <path d="M4 20 C22 14 38 14 52 20" stroke="#6a7a59" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- 보이지 않는 연결 -->
+                <path d="M52 20 C58 22 62 26 68 28" stroke="#ae7a55" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" opacity="0.7"/>
+                <!-- 오른쪽 결 — 살짝 다른 높이에서 재시작 -->
+                <path d="M68 28 C82 34 98 34 116 28" stroke="#6a7a59" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- 배경 보조 결 -->
+                <path d="M4 28 C22 22 38 22 116 20" stroke="#9fb08d" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+            </svg>
+            <span class="logo-name">서온</span>
+        </button>
+        <ul class="nav-links">
+            <li><a data-page="about" onclick="showPage('about')">나에 대해</a></li>
+            <li><a data-page="writing" onclick="showPage('writing')">기록</a></li>
+            <li><a data-page="direction" onclick="showPage('direction')">결을 따라</a></li>
+        </ul>
+    </div>
+</header>
+
+<!-- ─── HOME ─── -->
+<div class="page active" id="page-home">
+    <div class="wrap">
+        <div class="home-hero">
+
+            <!-- 브랜드마크 — Concept D: 끊겼다 이어지는 결 -->
+            <div class="home-brand-mark">
+                <svg viewBox="0 0 260 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="서온 로고마크">
+                    <!-- 보조 결 (배경 — 보이지 않는 연결의 전체 호) -->
+                    <path d="M 8 50 C 80 28 180 28 252 50"
+                          stroke="#9fb08d" stroke-width="0.8" stroke-linecap="round" opacity="0.22"/>
+                    <!-- 왼쪽 결 — 세이지 그린, 부드럽게 상승 -->
+                    <path d="M 8 44 C 32 14 72 14 112 30"
+                          stroke="#6a7a59" stroke-width="2.8" stroke-linecap="round"/>
+                    <!-- 보이지 않는 연결 — 흙빛 점선, 살짝 내려앉는 호 -->
+                    <path d="M 112 30 C 124 34 133 42 148 47"
+                          stroke="#ae7a55" stroke-width="1.4" stroke-linecap="round"
+                          stroke-dasharray="3.5 4" opacity="0.75"/>
+                    <!-- 오른쪽 결 — 더 낮은 자리에서 다시 시작, 세이지 그린 -->
+                    <path d="M 148 47 C 168 56 208 52 252 32"
+                          stroke="#6a7a59" stroke-width="2.8" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="home-slogan">
+                <span class="home-slogan-ko">결을 따라</span>
+                <span class="home-slogan-dot"></span>
+                <span class="home-slogan-en">along the grain</span>
+            </div>
+
+            <p class="home-phrase">
+                사람과 이야기 사이에서<br>
+                결이 닿는 곳을 찾아가고 있어요
+            </p>
+        </div>
+    </div>
+    <div class="wrap">
+        <footer class="site-footer">
+            <div class="footer-copy">© 서온 — 결이 닿는 곳에서</div>
+        </footer>
+    </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<div class="page" id="page-about">
+    <div class="wrap">
+        <div class="page-content">
+            <div class="page-label">나에 대해</div>
+            <div class="about-photo">
+                <img src="about_photo.jpg" alt="서온">
+            </div>
+            <p class="about-intro">
+                안녕하세요, <em>서온</em>입니다.<br>
+                <span class="about-role">결이 닿는 대로</span>
+            </p>
+            <p class="about-body">
+                현장에서 여러 매장을 관리하는 일을 하고 있어요.<br>
+                매일 아침 문을 열기 전, 60초 동안 오늘의 온도를 확인하고,<br>
+                퇴근 후엔 그 온도를 이야기로 남깁니다.<br><br>
+                20년을 일했는데, 매년 처음 보는 것들이 생겨요.<br>
+                그래서 계속 기록하게 되는 것 같아요.<br><br>
+                이미 닿은 결도 있고,<br>
+                아직 찾아가는 중인 결도 있어요.<br>
+                어떤 형태로 닿을지는 모르지만 —<br>
+                닿는 곳이 생기면, 이곳에 하나씩 남길 거예요.<br><br>
+                <em>흘러가다 보면, 거기에도 닿을 것 같아요.</em>
+            </p>
+        </div>
+    </div>
+    <div class="wrap">
+        <footer class="site-footer">
+            <div class="footer-copy">© 서온 — 결이 닿는 곳에서</div>
+        </footer>
+    </div>
+</div>
+
+<!-- ─── WRITING ─── -->
+<div class="page" id="page-writing">
+    <div class="wrap">
+        <div class="page-content">
+            <div class="page-label">기록</div>
+            <div class="writing-category">
+                <div class="writing-category-title">리더의 온도</div>
+                <div class="writing-category-desc">현장 에세이 · Field Essays</div>
+            </div>
+            <ul class="post-list">
+                <li class="post-item" data-post="gamgak" data-core="1">
+                    <span class="post-num">㉚</span>
+                    <div class="post-body">
+                        <div class="post-title">감각이 먼저 알 때</div>
+                        <div class="post-preview">숫자가 나오기 전에 이미 알고 있을 때가 있다. 매장 문을 열고 들어서는 순간, 설명하기 어려운 무언가가 느껴진다.</div>
+                    </div>
+                </li>
+                <li class="post-item" data-post="nochigi" data-core="1">
+                    <span class="post-num">㉙</span>
+                    <div class="post-body">
+                        <div class="post-title">놓치기로 결심한 날</div>
+                        <div class="post-preview">기회는 두 번 왔다. 나는 두 번 모두 지원서를 열지 않았다. 처음에는 그 이유를 명확하게 설명할 수 없었다.</div>
+                    </div>
+                </li>
+                <li class="post-item" data-post="allim" data-core="1">
+                    <span class="post-num">㉘</span>
+                    <div class="post-body">
+                        <div class="post-title">알림을 끄는 일</div>
+                        <div class="post-preview">11분이었다. 점장과 마주 앉아 이야기를 나눈 시간. 그 짧은 11분 동안 알림이 17개 쌓여 있었다.</div>
+                    </div>
+                </li>
+                <li class="post-item" data-post="chungjeon">
+                    <span class="post-num">㉗</span>
+                    <div class="post-body">
+                        <div class="post-title">나를 충전하는 시간</div>
+                        <div class="post-preview">나는 혼자 있는 시간, 조용히 책을 읽는 시간 속에서 에너지를 채우는 사람이었다.</div>
+                    </div>
+                </li>
+                <li class="post-item" data-post="60cho" data-core="1">
+                    <span class="post-num">①</span>
+                    <div class="post-body">
+                        <div class="post-title">출근 전 60초</div>
+                        <div class="post-preview">저 문을 열고 들어가는 내 얼굴이 오늘 이 공간의 첫인상이 될 테니까.</div>
+                    </div>
+                </li>
+            </ul>
+            <p class="post-note">핵심 글(<span class="post-note-mark">↗</span> 표시)은 네이버 블로그 ‘리더의 온도’로 이어집니다.</p>
+        </div>
+    </div>
+    <div class="wrap">
+        <footer class="site-footer">
+            <div class="footer-copy">© 서온 — 결이 닿는 곳에서</div>
+        </footer>
+    </div>
+</div>
+
+<!-- ─── DIRECTION ─── -->
+<div class="page" id="page-direction">
+    <div class="wrap">
+        <div class="page-content">
+            <div class="page-label">결을 따라</div>
+
+            <div class="gyeol-def">
+                <div class="gyeol-def-term">결 · gyeol</div>
+                <p class="gyeol-def-body">
+                    나무에 새겨진 결처럼,<br>
+                    살아온 방향이 남긴 자연스러운 흔적.<br>
+                    사람과 글과 자연 사이에서, 흘러가다 닿는 것들.<br>
+                    <em>결은 만드는 게 아니라, 따라가면 생긴다.</em>
+                </p>
+            </div>
+
+            <div class="direction-body">
+                <p class="direction-text">
+                    현장에서 보낸 20년의 온도가<br>
+                    <strong>기록이 되고, 이야기가 되고,</strong><br>
+                    올해 안엔 한 권의 책이 될 거예요.<br><br>
+                    그 다음이 어디로 이어질지는 아직 몰라요.<br>
+                    결은 따라가면 생긴다고 했으니까요.<br><br>
+                    <em style="color: var(--earth); font-style: normal;">멈추지 않고. 조용히, 꾸준히.</em>
+                </p>
+            </div>
+
+            <div class="connect-block">
+                <div class="connect-title">연결</div>
+                <p class="connect-intro">
+                    결이 닿는 곳이라면,<br>
+                    어디든 기꺼이 이어지고 싶어요.
+                </p>
+                <ul class="connect-list">
+                    <li class="connect-item">
+                        <span class="connect-category">이메일</span>
+                        <span class="connect-detail">
+                            <a href="mailto:zhengai1217@gmail.com">zhengai1217@gmail.com</a>
+                        </span>
+                    </li>
+<li class="connect-item">
+                        <span class="connect-category">블로그</span>
+                        <span class="connect-detail">
+                            <a id="blog-link" href="#" target="_blank" rel="noopener">네이버 블로그 — 리더의 온도</a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <footer class="site-footer">
+            <div class="footer-copy">© 서온 — 결이 닿는 곳에서</div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    /* ─────────────────────────────────────────────
+       네이버 블로그 링크 설정
+       ─ 아래 따옴표 안에 각 글의 네이버 블로그 주소를 넣으면
+         '기록' 페이지의 해당 글이 그 주소로 연결됩니다.
+       ─ 비워두면(''), 글은 표시되지만 링크는 걸리지 않습니다.
+       ─ NAVER_BLOG 에는 블로그 메인(또는 '리더의 온도' 카테고리) 주소.
+       ───────────────────────────────────────────── */
+    const NAVER_BLOG = '';   // 예: 'https://blog.naver.com/아이디'
+
+    const BLOG_LINKS = {
+        gamgak:    '',   // 감각이 먼저 알 때
+        nochigi:   '',   // 놓치기로 결심한 날
+        allim:     '',   // 알림을 끄는 일
+        '60cho':   '',   // 출근 전 60초
+        // chungjeon: '나를 충전하는 시간' — 핵심 글 아님, 필요 시 추가
+    };
+
+    // 기록 페이지의 핵심 글을 블로그 링크로 연결
+    function wireBlogLinks() {
+        document.querySelectorAll('.post-item[data-core="1"]').forEach(item => {
+            const key = item.dataset.post;
+            const url = BLOG_LINKS[key] || NAVER_BLOG;
+
+            // 핵심 글에는 외부 링크 화살표 표시
+            const title = item.querySelector('.post-title');
+            if (title && !title.querySelector('.post-arrow')) {
+                const arrow = document.createElement('span');
+                arrow.className = 'post-arrow';
+                arrow.textContent = '↗';
+                arrow.setAttribute('aria-hidden', 'true');
+                title.appendChild(arrow);
+            }
+
+            item.classList.add('is-link');
+            item.setAttribute('role', 'link');
+            item.setAttribute('tabindex', '0');
+
+            const open = () => {
+                if (url) window.open(url, '_blank', 'noopener');
+            };
+            item.addEventListener('click', open);
+            item.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+            });
+        });
+
+        // '결을 따라' 페이지의 블로그 링크
+        const blogAnchor = document.getElementById('blog-link');
+        if (blogAnchor && NAVER_BLOG) blogAnchor.href = NAVER_BLOG;
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById('page-' + id);
+        if (target) {
+            target.classList.add('active');
+            target.style.opacity = '0';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => { target.style.opacity = '1'; });
+            });
+        }
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.classList.remove('on');
+            if (a.dataset.page === id) a.classList.add('on');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 홈 초기 페이드인 + 블로그 링크 연결
+    (function () {
+        wireBlogLinks();
+        const home = document.getElementById('page-home');
+        home.style.opacity = '0';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => { home.style.opacity = '1'; });
+        });
+    })();
+</script>
+
+</body>
+</html>
